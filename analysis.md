@@ -5,6 +5,7 @@ Property:
  - price per day
  - description
  - place * its own table
+ - categry *
 
  features
   1.rating * own table
