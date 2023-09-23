@@ -37,9 +37,12 @@ INSTALLED_APPS = [
     'about.apps.AboutConfig',
     'settings.apps.SettingsConfig',
     'accounts.apps.AccountsConfig',
-    #package
+    #packages
     "taggit",
-    
+    'django_summernote',
+    "bootstrap4",
+    'django_filters',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

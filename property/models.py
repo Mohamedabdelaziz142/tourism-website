@@ -54,13 +54,13 @@ class PropertyReview(models.Model):
        return str(self.property)
     
 
-count = {
-    (1,1),
-    (2,2),
-    (3,3),
-    (4,4)
+count = [
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (4, '4')
 
-}
+]
 
 
 class PropertyBook(models.Model):
@@ -69,8 +69,8 @@ class PropertyBook(models.Model):
 
     date_from = models.DateField(default=timezone.now) 
     date_to = models.DateField(default=timezone.now) 
-    children = models.CharField(max_length=2,choices=count)
-    guest = models.CharField(max_length=2,choices=count)
+    children = models.IntegerField(max_length=2,choices=count)
+    guest = models.IntegerField(max_length=2,choices=count)
 
     def __str__(self):
        return str(self.property)
