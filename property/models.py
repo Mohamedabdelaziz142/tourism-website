@@ -69,8 +69,8 @@ class PropertyBook(models.Model):
 
     date_from = models.DateField(default=timezone.now) 
     date_to = models.DateField(default=timezone.now) 
-    children = models.IntegerField(max_length=2,choices=count)
-    guest = models.IntegerField(max_length=2,choices=count)
+    children = models.IntegerField(choices=count)
+    guest = models.IntegerField(choices=count)
 
     def __str__(self):
        return str(self.property)
