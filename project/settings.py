@@ -135,7 +135,7 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_URL = '/static/'
-STATIC_ROOT =  os.path.join(BASE_DIR, "static",'staticroot'),
+STATIC_ROOT =  os.path.join(BASE_DIR, "static",'staticroot')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     'E:\downloads\coding\python\django\dj_tourism-website\src\static',]

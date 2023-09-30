@@ -3,8 +3,11 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-# Create your models here.
+
+
+
 class Property(models.Model):
+   owner = models.ForeignKey(User, related_name="property_owner", on_delete=models.CASCADE)
    name = models.CharField(max_length=100)
    image = models.ImageField(upload_to='property/')
    price = models.IntegerField(default=0)
@@ -24,6 +27,31 @@ class Property(models.Model):
 
    def get_absolute_url(self):
        return reverse("property:property_detail", kwargs={"slug": self.slug})
+   
+   
+   def check_availability(self):
+     all_reservations = self.book_property.all()
+     now = timezone.now().date()
+
+     for reservation in all_reservations:
+        if now >= reservation.date_from and now <= reservation.date_to:
+            reserved_to = reservation.date_to
+            return f'Reserved to {reserved_to}'
+
+    # If no reservations match or current date is after all reservations, the property is available
+     return 'Available'
+         
+   def get_avg_rating(self):
+        all_reviews = self.review_property.all()
+        all_rating = 0
+
+        if len(all_reviews) > 0:
+           for review in all_reviews:
+              all_rating += review.rate
+              return round(all_rating/len(all_reviews),2)
+           else: 
+            return '_'
+
     
 class PropertyImages(models.Model):
   property = models.ForeignKey(Property,related_name='property_image',on_delete=models.CASCADE)
@@ -63,7 +91,6 @@ count = [
 
 ]
 
-
 class PropertyBook(models.Model):
     user = models.ForeignKey(User,related_name='book_owner',on_delete=models.CASCADE)
     property = models.ForeignKey(Property,related_name='book_property',on_delete=models.CASCADE)
@@ -75,5 +102,5 @@ class PropertyBook(models.Model):
 
     def __str__(self):
        return str(self.property)
-
-   
+    
+    
