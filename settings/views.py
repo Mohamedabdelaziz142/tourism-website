@@ -9,12 +9,10 @@ from django.db.models import Count
 def home(request):
     place = Place.objects.all().annotate(property_count=Count('property_place'))
     category = Category.objects.all()
-
     resturant_list = Property.objects.filter(category__name ='Restaurants')[:5]
     hotels_list =  Property.objects.filter(category__name= 'Hotels')[:4]
     places_list =  Property.objects.filter(category__name= 'Places')[:4]
     recent_posts = Post.objects.all()[:4]
-
     users_count = User.objects.count()
     places_count = Property.objects.filter(category__name= 'Places').count()
     resturants_count = Property.objects.filter(category__name ='Restaurants').count()
@@ -32,8 +30,6 @@ def home(request):
         'places_count':places_count,
         'resturants_count':resturants_count,
         'hotels_count':hotels_count
-
-        
     })
 
 
@@ -56,6 +52,3 @@ def category_filter(request, category):
    property_list = Property.objects.filter(category=category)
    return render(request, 'settings/home_search.html', {'property_list': property_list})
 
-
-def contact_us(request):
-    pass
