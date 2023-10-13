@@ -4,8 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-
-
 class Property(models.Model):
    owner = models.ForeignKey(User, related_name="property_owner", on_delete=models.CASCADE)
    name = models.CharField(max_length=100)
@@ -42,15 +40,17 @@ class Property(models.Model):
      return 'Available'
          
    def get_avg_rating(self):
-        all_reviews = self.review_property.all()
-        all_rating = 0
+    all_reviews = self.review_property.all()
+    all_rating = 0
 
-        if len(all_reviews) > 0:
-           for review in all_reviews:
-              all_rating += review.rate
-              return round(all_rating/len(all_reviews),2)
-           else: 
-            return '_'
+    if len(all_reviews) > 0:
+        for review in all_reviews:
+            all_rating += review.rate
+
+        return round(all_rating / len(all_reviews), 2)
+    else:
+        return None
+
 
     
 class PropertyImages(models.Model):
@@ -83,23 +83,27 @@ class PropertyReview(models.Model):
        return str(self.property)
     
 
-count = [
+count1 = [
+    (0, '0'),
     (1, '1'),
     (2, '2'),
     (3, '3'),
     (4, '4')
-
+]
+count2 = [
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (4, '4')
 ]
 
 class PropertyBook(models.Model):
     user = models.ForeignKey(User,related_name='book_owner',on_delete=models.CASCADE)
     property = models.ForeignKey(Property,related_name='book_property',on_delete=models.CASCADE)
-
     date_from = models.DateField(default=timezone.now) 
     date_to = models.DateField(default=timezone.now) 
-    children = models.IntegerField(choices=count)
-    guest = models.IntegerField(choices=count)
-
+    children = models.IntegerField(choices=count1,default=0)
+    guest = models.IntegerField(choices=count2)
     def __str__(self):
        return str(self.property)
     

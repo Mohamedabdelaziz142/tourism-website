@@ -2,7 +2,7 @@
 {% load static %}
 {% block body %}
 
-<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_5.jpg' %});">
+<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_2.jpg' %});">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center"
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-12 ftco-animate">
                         <div class="single-slider owl-carousel">
-                            {% for image in object.property_image.all  %}
+                            {% for image in images.all %}
                             
                             <div class="item">
                                 <div class="hotel-img" style="background-image: url({{image.image.url}});"></div>
@@ -47,85 +47,51 @@
                                 <i class="icon-star"></i>
                                 <i class="icon-star"></i>
                                 <i class="icon-star-o"></i>
-                                8 Rating</span>
+                               {{property.get_avg_rating}} </span>
                         </p>
                 <p>{{property.description|safe}}</p>
                     </div>
  
+                 <h4 class="mb-5">Check Availability &amp; Booking</h4>
 
-                  {% if object.check_availability == 'Available' %}
+                 <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
+                  {% if property.check_availability == 'Available' %}
                    <h4>Available Today</h4>
+                   <form method="post" class="form" onsubmit="return confirm('Are you sure you want to book this property?')">
+                    {% load bootstrap4 %}
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">Book</button>
+                    {% endbuttons %}
+                  </form>
                   {% else %}
-                   <h4>This Currently Unavailable, And It Is {{object.check_availability}}</h4>
+                   <h4>This Currently Unavailable, And It Is {{property.check_availability}}</h4>
                   {% endif %}
         
-
-
-                <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
-                    <h4 class="mb-5">Check Availability &amp; Booking</h4>
-                    <form method="post" class="form">
-                        {% load bootstrap4 %}
-                        {% csrf_token %}
-                        {% bootstrap_form form %}
-                        {% buttons %}
-                            <button type="submit" class="btn btn-primary">Check Availability</button>
-                        {% endbuttons %}
-                    </form>
-                          
-                    <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
+                </div>
+                <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">           
                         <h4 class="mb-4">Review &amp; Ratings</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form method="post" class="star-rating">
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
-                                                        class="icon-star"></i><i class="icon-star"></i><i
-                                                        class="icon-star"></i> 100
-                                                    Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
-                                                        class="icon-star"></i><i class="icon-star"></i><i
-                                                        class="icon-star-o"></i> 30
-                                                    Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
-                                                        class="icon-star"></i><i class="icon-star-o"></i><i
-                                                        class="icon-star-o"></i> 5
-                                                    Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star"></i><i
-                                                        class="icon-star-o"></i><i class="icon-star-o"></i><i
-                                                        class="icon-star-o"></i> 0
-                                                    Ratings</span></p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">
-                                            <p class="rate"><span><i class="icon-star"></i><i class="icon-star-o"></i><i
-                                                        class="icon-star-o"></i><i class="icon-star-o"></i><i
-                                                        class="icon-star-o"></i> 0
-                                                    Ratings</span></p>
-                                        </label>
-                                    </div>
-                                </form>
+                        <div>
+                        <span class="star">
+                            <i class="icon-star"></i>
+                            <i class="icon-star"></i>
+                            <i class="icon-star"></i>
+                            <i class="icon-star"></i>
+                            <i class="icon-star-o"></i>
+                           {{property.get_avg_rating}} </span>
+                        </div>
+                    {% for review in reviews  %}                           
+                        <div class="card mt-2">
+                            <div class="card-header">{{review.author}}</div>
+                            <div class="card-body">
+                              <h5 class="card-title">Rate: {{review.rate}}</h5>
+                              <p class="card-text">Comment:<br>{{review.feedback}}</p>
                             </div>
                         </div>
-                    </div>
+                     {% endfor %}
+                     <a href="{% url 'property:property_review' property.id %}" class="btn btn-primary mt-2 ">Add Review</a>
+                </div>
                     <div class="col-md-12 hotel-single ftco-animate mb-5 mt-5">
                         <h4 class="mb-4">Related Hotels</h4>
                         <div class="row">
@@ -144,7 +110,7 @@
                                                     <i class="icon-star"></i>
                                                     <i class="icon-star"></i>
                                                     <i class="icon-star-o"></i>
-                                                    <span>8 Rating</span>
+                                                    <span>{{property.get_avg_rating}}</span>
                                                 </p>
                                             </div>
                                             <div class="two">
@@ -154,7 +120,7 @@
                                         <hr>
                                         <p class="bottom-area d-flex">
                                             <span><i class="icon-map-o"></i>{{property.place}}</span>
-                                            <span class="ml-auto"><a href="#">Book Now</a></span>
+                                            <span class="ml-auto"><a href="{{ property.image.url }}">Book Now</a></span>
                                         </p>
                                     </div>
                                 </div>

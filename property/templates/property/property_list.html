@@ -3,7 +3,7 @@
 {% block body %}
 {% load bootstrap4 %}
 
-<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_5.jpg' %});">
+<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_2.jpg' %});">
     <div class="overlay"></div>
     <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center"
@@ -59,17 +59,21 @@
                                             <i class="icon-star"></i>
                                             <i class="icon-star"></i>
                                             <i class="icon-star-o"></i>
-                                            <span>8 Rating</span>
+                                            <span>{{property.get_avg_rating}}</span>
                                         </p>
                                     </div>
                                     <div class="two">
+                                        {% if property.category != 'Restaurants' and property.category != 'Shoping' %}
                                         <span class="price per-price">${{ property.price }}<br><small>/night</small></span>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <hr>
                                 <p class="bottom-area d-flex">
                                     <span><i class="icon-map-o"></i>{{ property.place }}</span>
-                                    <span class="ml-auto"><a href="{{ property.get_absolute_url }}">Book Now</a></span>
+                                    {% if property.category != 'Restaurants' and property.category != 'Shoping' %}
+                                     <span class="ml-auto"><a href="{{ property.get_absolute_url }}">Book Now</a></span>                                   
+                                    {% endif %}
                                 </p>
                             </div>
                         </div>

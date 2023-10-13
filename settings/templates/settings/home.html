@@ -95,17 +95,16 @@
     		<div class="row">
     			<div class="col-md-12">
     				<div class="destination-slider owl-carousel ftco-animate">
-						{% for place in places %}
-						
+						{% for place in places %}						
     					<div class="item">
 		    				<div class="destination">
-		    					<a href="#" class="img d-flex justify-content-center align-items-center" style="background-image: url({{place.image.url}});">
+		    					<a href="{% url 'home:place_filter' place=place %}" class="img d-flex justify-content-center align-items-center" style="background-image: url({{place.image.url}});">
 		    						<div class="icon d-flex justify-content-center align-items-center">
 		    							<span class="icon-search2"></span>
 		    						</div>
 		    					</a>
 		    					<div class="text p-3">
-		    						<h3><a href="#">{{ place }}</a></h3>
+		    						<h3><a href="{% url 'home:place_filter' place=place %}">{{ place }}</a></h3>
 		    						<span class="listing">{{place.property_count}} listing</span>
 		    					</div>
 		    				</div>
@@ -117,7 +116,7 @@
     	</div>
     </section>
 
-    <section class="ftco-section bg-light">
+<!--<section class="ftco-section bg-light">
     	<div class="container">
 				<div class="row justify-content-start mb-5 pb-3">
           <div class="col-md-7 heading-section ftco-animate">
@@ -128,10 +127,10 @@
     	</div>
     	<div class="container-fluid">
     		<div class="row">
-				{% for place in places_list %}
-				
-    			<div class="col-sm col-md-6 col-lg ftco-animate">
-    				<div class="destination">
+					<i class="icon-star"></i>
+              {% for place in places_list %}
+    			  <div class="col-sm col-md-6 col-lg ftco-animate">
+    				 <div class="destination">
     					<a href="{{place.get_absolute_url}}" class="img img-2 d-flex justify-content-center align-items-center" style="background-image: url({{place.image.url}});">
     						<div class="icon d-flex justify-content-center align-items-center">
     							<span class="icon-search2"></span>
@@ -145,30 +144,29 @@
 		    							<i class="icon-star"></i>
 		    							<i class="icon-star"></i>
 		    							<i class="icon-star"></i>
-		    							<i class="icon-star"></i>
 		    							<i class="icon-star-o"></i>
 		    							<span>8 Rating</span>
 		    						</p>
 	    						</div>
 	    						<div class="two">
 	    							<span class="price">${{place.price}}</span>
-    							</div>
-    						</div>
     						<p>Far far away, behind the word mountains, far from the countries</p>
     						<p class="days"><span>2 days 3 nights</span></p>
     						<hr>
-    						<p class="bottom-area d-flex">
+    								</div>
+    						</div>
+    					<p class="bottom-area d-flex">
     							<span><i class="icon-map-o"></i> San Franciso, CA</span> 
     							<span class="ml-auto"><a href="#">Discover</a></span>
     						</p>
     					</div>
     				</div>
-    			</div>
-                {% endfor %}
-
+    			  </div>
+                {% endfor %} 
     		</div>
     	</div>
-    </section>
+    </section>-->
+
 
     <section class="ftco-section ftco-counter img" id="section-counter" style="background-image: url(images/bg_1.jpg);">
     	<div class="container">
@@ -231,8 +229,7 @@
     	</div>
     	<div class="container-fluid">
     		<div class="row">
-				{% for hotel  in hotels_list %}
-				
+				{% for hotel  in hotels_list %}				
     			<div class="col-sm-3 col-md-3 col-lg-3 ftco-animate mx-auto">
     				<div class="destination">
     					<a href="{{hotel.get_absolute_url}}" class="img img-2 d-flex justify-content-center align-items-center" style="background-image: url({{hotel.image.url}});">
@@ -250,7 +247,7 @@
 		    							<i class="icon-star"></i>
 		    							<i class="icon-star"></i>
 		    							<i class="icon-star-o"></i>
-		    							<span>8 Rating</span>
+		    							<span>{{hotel.get_avg_rating}}</span>
 		    						</p>
 	    						</div>
 	    						<div class="two">
@@ -347,24 +344,23 @@
           </div>
         </div>    		
     		<div class="row">
-				{% for resturant in resturants_list  %}
-				
-    			<div class="col-md-6 col-lg-3 ftco-animate">
-    				<div class="destination">
-    					<a href="{{resturant.get_absolute_url}}" class="img img-2 d-flex justify-content-center align-items-center" style="background-image: url({{resturant.image.url}});">
+				{% for restaurant in resturant_list %}
+    			  <div class="col-md-6 col-lg-3 ftco-animate">
+    				 <div class="destination">
+    					<a href="{{restaurant.get_absolute_url}}" class="img img-2 d-flex justify-content-center align-items-center" style="background-image: url({{restaurant.image.url}});">
     						<div class="icon d-flex justify-content-center align-items-center">
     							<span class="icon-search2"></span>
     						</div>
     					</a>
     					<div class="text p-3">
-    						<h3><a href="{{resturant.get_absolute_url}}">{{resturant}}</a></h3>
+    						<h3><a href="{{resturant.get_absolute_url}}">{{restaurant}}</a></h3>
     						<p class="rate">
     							<i class="icon-star"></i>
     							<i class="icon-star"></i>
     							<i class="icon-star"></i>
     							<i class="icon-star"></i>
     							<i class="icon-star-o"></i>
-    							<span>8 Rating</span>
+    							<span>{{restaurant.get_avg_rating}}</span>
     						</p>
     						<p>Far far away, behind the word mountains, far from the countries</p>
     						<hr>
@@ -373,8 +369,8 @@
     							<span class="ml-auto"><a href="{{resturant.get_absolute_url}}">Discover</a></span>
     						</p>
     					</div>
-    				</div>
-    			</div>
+    				 </div>
+    			  </div>
 				{% endfor %}
     		</div>
     	</div>
@@ -414,23 +410,46 @@
       <div class="parallax-img d-flex align-items-center">
         <div class="container">
           <div class="row d-flex justify-content-center">
-            <div class="col-md-7 text-center heading-section heading-section-white ftco-animate">
+            <div id="main_form_div" class="col-md-7 text-center heading-section heading-section-white ftco-animate">
               <h2>Subcribe to our Newsletter</h2>
               <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in</p>
               <div class="row d-flex justify-content-center mt-5">
                 <div class="col-md-8">
-                  <form action="#" class="subscribe-form">
-                    <div class="form-group d-flex">
-                      <input type="text" class="form-control" placeholder="Enter email address">
-                      <input type="submit" value="Subscribe" class="submit px-3">
+                  <form id="newsletter_form" action="{% url 'home:newsletter' %}" class="subscribe-form" method="POST">
+					{% csrf_token %}                   
+					<div class="form-group d-flex">
+                      <input type="text" class="form-control" name="emailinput" placeholder="Enter email address">
+                      <input type="submit" value="Subscribe"  class="submit px-3">
                     </div>
                   </form>
                 </div>
               </div>
             </div>
-          </div>
+
+			<div id="succes_div" style="display:none" class="col-md-7 text-center heading-section heading-section-white ftco-animate">
+				<h5>Subcribed Successfully</h5>
+		</div>
         </div>
       </div>
     </section>
 
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+	$("#newsletter_form").submit(function(e){
+		e.preventDefault();
+
+		var form = $(this);
+		var url = form.attr('action')
+
+	$.ajax({
+		type:"POST",
+		url:url,
+		data:form.serialize(),
+		success: function(data){
+			document.getElementById('main_form_div').style.display="none"
+			document.getElementById('succes_div').style.display="block"			
+ 		}                      
+	})
+	})
+</script>
 {% endblock body %}
